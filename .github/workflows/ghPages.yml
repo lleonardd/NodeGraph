@@ -17,9 +17,9 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Install dependencies and build in nodegraphplayground
+            - name: Install dependencies and build in nodeGraphPlayground
               run: |
-                  cd nodegraphplayground
+                  cd nodeGraphPlayground
                   npm install
                   npm run build
               working-directory: ${{ github.workspace }}
@@ -28,5 +28,5 @@ jobs:
               uses: JamesIves/github-pages-deploy-action@4.1.4
               with:
                   branch: gh-pages
-                  folder: nodegraphplayground/build
+                  folder: nodeGraphPlayground/build
                   token: ${{ secrets.GITHUB_TOKEN }}
