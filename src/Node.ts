@@ -1,9 +1,9 @@
-import { Link } from './Link'
-import { genId } from './util'
-import { LinkGraphData } from './LinkGraphData'
-import { PhysicalMovingObject, PhysicalMovingObjectProps } from './PhysicalMovableObject'
-import { Coordinate } from './Types/Coordinate'
-import { drawTextOnCanvasContextWithSettings } from './externalRenderingMethods'
+import { Link } from "./Link"
+import { genId } from "./util"
+import { LinkGraphData } from "./LinkGraphData"
+import { PhysicalMovingObject, PhysicalMovingObjectProps } from "./PhysicalMovableObject"
+import { Coordinate } from "./Types/Coordinate"
+import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
 
 export type NodeProps = {
     id: string
@@ -23,11 +23,12 @@ type NodeActionStatus = {
 }
 
 // needs to be a function to create a new object instance
-const genEmptyNodeActionStatus = () => ({
-    "hovered": false,
-    "clicked": false,
-    "dragged": false,
-} as NodeActionStatus)
+const genEmptyNodeActionStatus = () =>
+    ({
+        hovered: false,
+        clicked: false,
+        dragged: false,
+    } as NodeActionStatus)
 
 export class Node extends PhysicalMovingObject {
     id: string
@@ -75,7 +76,7 @@ export class Node extends PhysicalMovingObject {
     update(props: Partial<NodeProps>) {
         Object.entries(props).forEach(([key, value]) => {
             if (key in (this as Node) && value !== undefined) {
-                (this as any)[key] = value
+                ;(this as any)[key] = value
             }
         })
     }

@@ -1,8 +1,8 @@
-import { SharedGraphManagerData } from './GraphManager';
+import { SharedGraphManagerData } from "./GraphManager"
 
 export class LinkGraphData {
     linked: SharedGraphManagerData
     constructor({ linked }: LinkGraphData) {
-        this.linked = linked;
+        this.linked = linked
     }
 }

@@ -1,17 +1,17 @@
-import { LinkGraphData } from './LinkGraphData'
-import { Node } from './Node'
-import { Coordinate } from './Types/Coordinate'
-import { Settings } from './Types/SettingsTypes'
-import { drawTextOnCanvasContextWithSettings } from './externalRenderingMethods'
+import { LinkGraphData } from "./LinkGraphData"
+import { Node } from "./Node"
+import { Coordinate } from "./Types/Coordinate"
+import { Settings } from "./Types/SettingsTypes"
+import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
 
 const arrowTipLengthMultiplier = 5
 
 export type LinkProps = {
-    startNode: Node,
-    endNode: Node,
-    color: string,
-    title: string,
-    bidirectional: boolean,
+    startNode: Node
+    endNode: Node
+    color: string
+    title: string
+    bidirectional: boolean
 } & LinkGraphData
 
 export enum LinkActionState {
@@ -24,10 +24,11 @@ type LinkActionStatus = {
 }
 
 // needs to be a function to create a new object instance
-const genEmptyLinkActionStatus = () => ({
-    "hovered": false,
-    "clicked": false,
-} as LinkActionStatus)
+const genEmptyLinkActionStatus = () =>
+    ({
+        hovered: false,
+        clicked: false,
+    } as LinkActionStatus)
 
 export class Link extends LinkGraphData {
     startNode: Node
@@ -38,7 +39,7 @@ export class Link extends LinkGraphData {
     bidirectional: boolean
     actionStatus: LinkActionStatus = genEmptyLinkActionStatus()
 
-    constructor(props: Partial<LinkProps> & { startNode: Node, endNode: Node } & LinkGraphData) {
+    constructor(props: Partial<LinkProps> & { startNode: Node; endNode: Node } & LinkGraphData) {
         super(props)
         const { startNode, endNode, title, bidirectional = false, color } = props
         this.startNode = startNode
@@ -51,14 +52,14 @@ export class Link extends LinkGraphData {
         this.id = this.buildLinkId(startNode.id, endNode.id)
     }
 
-    buildLinkId(startNodeId: string, endNodeId: string,) {
-        return [startNodeId, endNodeId].sort().join('')
+    buildLinkId(startNodeId: string, endNodeId: string) {
+        return [startNodeId, endNodeId].sort().join("")
     }
 
     update(props: Partial<LinkProps>) {
         Object.entries(props).forEach(([key, value]) => {
             if (key in (this as Link) && value !== undefined) {
-                (this as any)[key] = value
+                ;(this as any)[key] = value
             }
         })
     }
@@ -133,7 +134,6 @@ export class Link extends LinkGraphData {
 
         return { startPos: modifiedStartPoint, endPos: modifiedEndPoint }
     }
-
 
     startAction(state: LinkActionState) {
         this.actionStatus[state] = true

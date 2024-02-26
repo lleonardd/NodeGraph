@@ -3,20 +3,20 @@ import { Settings } from "./Types/SettingsTypes"
 import { getFadedColorFromHex } from "./util"
 
 type drawTextOnCanvasContextWithSettingsProps = {
-    context: CanvasRenderingContext2D,
-    settings: Settings,
-    pos: Coordinate,
-    text: string,
-    zoom: number,
-    color?: string,
+    context: CanvasRenderingContext2D
+    settings: Settings
+    pos: Coordinate
+    text: string
+    zoom: number
+    color?: string
     align?: CanvasTextAlign
 }
 
 export function drawTextOnCanvasContextWithSettings({ context, settings, pos, text, zoom, color, align }: drawTextOnCanvasContextWithSettingsProps) {
-    if (zoom < (settings.displayOptions.textVisibilityZoomThreshold - 0.5)) return
+    if (zoom < settings.displayOptions.textVisibilityZoomThreshold - 0.5) return
     let alpha = 1
     if (zoom < settings.displayOptions.textVisibilityZoomThreshold) {
-        alpha = (zoom - (settings.displayOptions.textVisibilityZoomThreshold - 0.5))
+        alpha = zoom - (settings.displayOptions.textVisibilityZoomThreshold - 0.5)
         alpha = Math.max(0, alpha)
     }
     if (alpha < 0.1) return
@@ -26,4 +26,3 @@ export function drawTextOnCanvasContextWithSettings({ context, settings, pos, te
     context.textAlign = align ?? "center"
     context.fillText(text, pos.x, pos.y)
 }
-
