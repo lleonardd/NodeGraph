@@ -10,23 +10,23 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
-
-            - name: Setup Node
-              uses: actions/setup-node@v3
+            - uses: actions/checkout@v2
               with:
-                  node-version: "20"
+                  persist-credentials: false
 
-            - name: Install dependencies and build in nodeGraphPlayground
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "18"
+
+            - name: Install and Build
               run: |
                   cd nodeGraphPlayground
                   npm install
                   npm run build
-              working-directory: ${{ github.workspace }}
 
-            - name: Deploy to GitHub Pages
-              uses: JamesIves/github-pages-deploy-action@4.1.4
+            - name: Deploy to gh-pages
+              uses: peaceiris/actions-gh-pages@v3
               with:
-                  branch: gh-pages
-                  folder: nodeGraphPlayground/dist
-                  token: ${{ secrets.GITHUB_TOKEN }}
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./nodeGraphPlayground/dist
