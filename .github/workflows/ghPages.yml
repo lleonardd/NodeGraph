@@ -17,14 +17,12 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Change folder
-              run: cd nodegraphplayground
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Build project
-              run: npm run build
+            - name: Install dependencies and build in nodegraphplayground
+              run: |
+                  cd nodegraphplayground
+                  npm install
+                  npm run build
+              working-directory: ${{ github.workspace }}
 
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@4.1.4
