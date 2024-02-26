@@ -2,6 +2,8 @@
 
 Node Graph Library provides interactive node-graphs with various utility functions, interaction callbacks and settings for customization. Try it now in the [playground](https://lleonardd.github.io/NodeGraph/).
 
+[![Build and Deploy to GitHub Pages](https://github.com/lleonardd/NodeGraph/actions/workflows/ghPages.yml/badge.svg)](https://github.com/lleonardd/NodeGraph/actions/workflows/ghPages.yml)
+
 ## `GraphManager` Class Functions
 
 -   `startAnimation()`: Starts the animation loop.
