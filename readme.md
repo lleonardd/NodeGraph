@@ -1,6 +1,6 @@
 # Node Graph Library
 
-Node Graph Library provides interactive node-graphs with various utility functions, interaction callbacks and settings for customization.
+Node Graph Library provides interactive node-graphs with various utility functions, interaction callbacks and settings for customization. Try it now in the [playground](https://lleonardd.github.io/NodeGraph/).
 
 ## `GraphManager` Class Functions
 
@@ -17,7 +17,7 @@ Node Graph Library provides interactive node-graphs with various utility functio
 
 These settings object is split into multiple sub objects.
 
-You can also use the playground to play around with different settings and copy the finished settings object from the bottom of the page.
+You can also use the [playground](https://lleonardd.github.io/NodeGraph/) to play around with different settings and copy the finished settings object from the bottom of the page.
 
 | Setting           | Description                                                      |
 | ----------------- | ---------------------------------------------------------------- |
