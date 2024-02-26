@@ -1,6 +1,6 @@
 # Node Graph Library
 
-Node Graph Library provides interactive note graphs with various utility functions, interaction callbacks and settings for customization.
+Node Graph Library provides interactive node-graphs with various utility functions, interaction callbacks and settings for customization.
 
 ## `GraphManager` Class Functions
 
