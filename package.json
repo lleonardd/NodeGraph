@@ -1,0 +1,28 @@
+{
+  "name": "nodegraphlib",
+  "version": "1.0.0",
+  "description": "Renders interactive nodegraph on a js canvas",
+  "main": "/",
+  "directories": {
+    "test": "test"
+  },
+  "workspaces": [
+    "nodegraphplayground"
+  ],
+  "scripts": {
+    "dev": "npm run dev --prefix nodegraphplayground",
+    "build": "rollup -c && npm run build --prefix nodegraphplayground",
+    "build:nodegraphplayground": "npm run build --prefix nodegraphplayground"
+  },
+  "author": "Leonard Schedel",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/prismjs": "^1.26.3",
+    "rollup": "^4.12.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  }
+}
