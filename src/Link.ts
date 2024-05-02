@@ -7,8 +7,8 @@ import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
 const arrowTipLengthMultiplier = 5
 
 export type LinkProps = {
-    startNode: Node
-    endNode: Node
+    startNode: Node | string
+    endNode: Node | string
     color: string
     title: string
     bidirectional: boolean
@@ -49,10 +49,10 @@ export class Link extends LinkGraphData {
         this.color = color ?? this.linked.settings.displayOptions.defaultLinkColor
         this.title = title
         this.bidirectional = bidirectional
-        this.id = this.buildLinkId(startNode.id, endNode.id)
+        this.id = Link.buildLinkId(startNode.id, endNode.id)
     }
 
-    buildLinkId(startNodeId: string, endNodeId: string) {
+    static buildLinkId(startNodeId: string, endNodeId: string) {
         return [startNodeId, endNodeId].sort().join("")
     }
 
@@ -73,7 +73,7 @@ export class Link extends LinkGraphData {
         this.applyStyle(context)
         context.stroke()
 
-        if (this.title) {
+        if (this.title && ((this.actionStatus.hovered && this.linked.settings.displayOptions.showLinkTextOnHover) || !this.linked.settings.displayOptions.showLinkTextOnHover)) {
             drawTextOnCanvasContextWithSettings({
                 context,
                 settings: this.linked.settings,

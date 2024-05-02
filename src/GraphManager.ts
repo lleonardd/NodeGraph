@@ -99,14 +99,19 @@ export class GraphManager {
             x: (this.canvas.width + this.shared.positionOffset.x) * (0.5 - Math.random()),
             y: (this.canvas.height + this.shared.positionOffset.y) * (0.5 - Math.random()),
         }
+        if (props?.id && this.nodes.findIndex((node) => node.id === props?.id) !== -1) return null
         const newNode = new Node({ ...props, position, linked: this.shared })
         this.nodes.push(newNode)
         return newNode
     }
 
-    addLink(props: Partial<LinkProps> & { startNode: Node; endNode: Node }) {
-        if (props.startNode === props.endNode) return null
-        const newLink = new Link({ ...props, linked: this.shared })
+    addLink(props: Partial<LinkProps> & { startNodeOrId: LinkProps["startNode"]; endNodeOrId: LinkProps["endNode"] }) {
+        const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.find((node) => node.id === props.startNodeOrId)
+        const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
+        if (!startNode || !endNode || startNode === endNode) return null
+        const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
+        if (this.links.findIndex((link) => link.id === futureLinkId) !== -1) return null
+        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared })
         const existsAtIndex = this.links.findIndex((link) => link.id === newLink.id)
         if (existsAtIndex === -1) {
             this.links.push(newLink)
