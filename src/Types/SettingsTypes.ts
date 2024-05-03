@@ -40,6 +40,7 @@ type DisplayOptions = {
     defaultNodeSize: number
     defaultLinkThickness: number
     showLinkTextOnHover: boolean
+    showLinkTextOnHighlight: boolean
     textVisibilityZoomThreshold: number
 }
 
@@ -52,6 +53,7 @@ export const defaultDisplayOptions: DisplayOptions = {
     defaultNodeSize: 15,
     defaultLinkThickness: 2,
     showLinkTextOnHover: true,
+    showLinkTextOnHighlight: true,
     textVisibilityZoomThreshold: 0.7,
 }
 
