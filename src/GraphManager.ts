@@ -124,18 +124,18 @@ export class GraphManager {
     addLink(props: Partial<LinkProps> & { startNodeOrId: LinkProps["startNode"]; endNodeOrId: LinkProps["endNode"] }) {
         const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.find((node) => node.id === props.startNodeOrId)
         const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
+
         if (!startNode || !endNode || startNode === endNode) return null
         const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
-        if (this.links.findIndex((link) => link.id === futureLinkId) !== -1) return null
-        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared })
-        const existsAtIndex = this.links.findIndex((link) => link.id === newLink.id)
-        if (existsAtIndex === -1) {
-            this.links.push(newLink)
-            return newLink
-        } else if (props?.bidirectional || this.links[existsAtIndex].startNode === props.endNode) {
+        const existsAtIndex = this.links.findIndex((link) => link.id === futureLinkId)
+        if (existsAtIndex !== -1) {
             this.links[existsAtIndex].bidirectional = props?.bidirectional ?? true
+            return null
         }
-        return null
+
+        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared, bidirectional: props?.bidirectional })
+        this.links.push(newLink)
+        return newLink
     }
 
     updateNode(nodeOrNodeId: Node | string, props: Partial<NodeProps & PhysicalMovingObjectProps>) {
