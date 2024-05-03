@@ -46,6 +46,8 @@ export function GraphManagerSidebar({ settings, handleChange }: { settings: Sett
             <fieldset>
                 <legend>Graph status</legend>
                 <StatBatches items={[{ name: "Nodes", val: graphStats.nodes }, { name: "Links", val: graphStats.links }]} />
+                <ActionButton Title='Pause Movement' onClick={() => graphManager?.pauseMovement()} />
+                <ActionButton Title='Resume Movement' onClick={() => graphManager?.resumeMovement()} />
                 <ActionButton Title='Add Node' onClick={() => addNodes(1)} />
                 <ActionButton Title='Add 10 Nodes' onClick={() => addNodes(10)} />
                 <ActionButton Title='Add 100 Nodes' onClick={() => addNodes(100)} />

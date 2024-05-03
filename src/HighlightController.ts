@@ -33,11 +33,13 @@ export class HighlightController extends LinkGraphData {
                     if (link.startNode === element) {
                         this.highlightElements({ element: link, traverse })
                     }
+                    if (link.bidirectional) this.highlightElements({ element: link, traverse })
                 })
             }
             if (element instanceof Link) {
                 this.highlightElement(element.startNode)
                 this.highlightElements({ element: element.endNode, traverse })
+                if (element.bidirectional) this.highlightElements({ element: element.startNode, traverse })
             }
         }
 
@@ -47,10 +49,12 @@ export class HighlightController extends LinkGraphData {
                     if (link.endNode === element) {
                         this.highlightElements({ element: link, traverse })
                     }
+                    if (link.bidirectional) this.highlightElements({ element: link, traverse })
                 })
             }
             if (element instanceof Link) {
                 this.highlightElements({ element: element.startNode, traverse })
+                if (element.bidirectional) this.highlightElements({ element: element.endNode, traverse })
             }
         }
 

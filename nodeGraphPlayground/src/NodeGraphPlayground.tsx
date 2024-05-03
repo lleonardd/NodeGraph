@@ -7,7 +7,7 @@ import JSONDisplay from './Components/JSONDisplay'
 import { Grid } from './Components/Grid'
 import { Node } from "../../src/Node"
 import { Link } from "../../src/Link"
-import { HighlightTraverseType } from '../../src/HighlightFunctionality'
+import { HighlightTraverseType } from '../../src/HighlightController'
 
 const defaultSettingsWithDemoActions = {
     ...defaultSettings,

@@ -5,7 +5,7 @@ import { PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { NodeProps, Node } from "./Node"
 import { InteractionController } from "./InteractionController"
 import { AllPartial } from "./Types/utilTypes"
-import { HighlightController, HighlightedElementsList, HighlightTraverseType, suppressForHighlights } from "./HighlightFunctionality"
+import { HighlightController, HighlightedElementsList, HighlightTraverseType, suppressForHighlights } from "./HighlightController"
 
 type GraphManagerProps = {
     settings: AllPartial<Settings>
@@ -33,6 +33,7 @@ export class GraphManager {
     animationFrameId: number | null
     interactionController: InteractionController | null
     highlightController: HighlightController | null
+    isMovementPaused: boolean
 
     constructor({ settings, canvas }: GraphManagerProps) {
         this.canvas = canvas
@@ -58,6 +59,7 @@ export class GraphManager {
             linked: this.shared,
         })
         this.highlightController = new HighlightController({ linked: this.shared })
+        this.isMovementPaused = false
     }
 
     updateCanvasSize() {
@@ -84,8 +86,16 @@ export class GraphManager {
         }
     }
 
+    pauseMovement() {
+        this.isMovementPaused = true
+    }
+
+    resumeMovement() {
+        this.isMovementPaused = false
+    }
+
     update() {
-        this.nodes.forEach((node) => node.move(this.nodes))
+        if (!this.isMovementPaused) this.nodes.forEach((node) => node.move(this.nodes))
         this.interactionController?.handleHover()
     }
 
@@ -114,18 +124,18 @@ export class GraphManager {
     addLink(props: Partial<LinkProps> & { startNodeOrId: LinkProps["startNode"]; endNodeOrId: LinkProps["endNode"] }) {
         const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.find((node) => node.id === props.startNodeOrId)
         const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
+
         if (!startNode || !endNode || startNode === endNode) return null
         const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
-        if (this.links.findIndex((link) => link.id === futureLinkId) !== -1) return null
-        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared })
-        const existsAtIndex = this.links.findIndex((link) => link.id === newLink.id)
-        if (existsAtIndex === -1) {
-            this.links.push(newLink)
-            return newLink
-        } else if (props?.bidirectional || this.links[existsAtIndex].startNode === props.endNode) {
+        const existsAtIndex = this.links.findIndex((link) => link.id === futureLinkId)
+        if (existsAtIndex !== -1) {
             this.links[existsAtIndex].bidirectional = props?.bidirectional ?? true
+            return null
         }
-        return null
+
+        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared, bidirectional: props?.bidirectional })
+        this.links.push(newLink)
+        return newLink
     }
 
     updateNode(nodeOrNodeId: Node | string, props: Partial<NodeProps & PhysicalMovingObjectProps>) {
