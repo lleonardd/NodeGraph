@@ -7,18 +7,27 @@ import JSONDisplay from './Components/JSONDisplay'
 import { Grid } from './Components/Grid'
 import { Node } from "../../src/Node"
 import { Link } from "../../src/Link"
+import { HighlightTraverseType } from '../../src/HighlightFunctionality'
 
 const defaultSettingsWithDemoActions = {
     ...defaultSettings,
     actionCallbacks: {
-        nodesHovered: (nodes: Node[]) => { console.log('Nodes hovered: ', nodes.map(node => node.id).join(", ")) },
+        nodesHovered: (nodes: Node[]) => {
+            if (nodes.length === 0) graphManager?.resetHighlightLinks()
+            else nodes.forEach(node => graphManager?.setHighlightedElements({ NodeLinkOrId: node, traverse: HighlightTraverseType.FOLLOW_LINKS }))
+            console.log('Nodes hovered: ', nodes.map(node => node.id).join(", "))
+        },
         nodeClicked: (node: Node) => { console.log('Node clicked: ', node.id) },
         nodeDoubleClicked: (node: Node) => { console.log('Node double clicked: ', node.id) },
         nodeDroppedOnNodes: (node: Node, nodes: Node[]) => {
             console.log('Node: ', node.id, ' dropped on Nodes: ', nodes.map(node => node.id).join(", "))
-            nodes.forEach(dropedOn => graphManager?.addLink({ startNode: node, endNode: dropedOn }))
+            nodes.forEach(droppedOn => graphManager?.addLink({ startNodeOrId: node, endNodeOrId: droppedOn }))
         },
-        linkHovered: (link: Link | null) => { console.log('Link hovered: ', link?.id) },
+        linkHovered: (link: Link | null) => {
+            if (!link) graphManager?.resetHighlightLinks()
+            else graphManager?.setHighlightedElements({ NodeLinkOrId: link, traverse: HighlightTraverseType.FOLLOW_LINKS_BACKWARDS })
+            console.log('Link hovered: ', link?.id)
+        },
         linkClicked: (link: Link) => { console.log('Link clicked: ', link.id) },
         linkDoubleClicked: (link: Link) => { console.log('Link double clicked: ', link.id) }
     },

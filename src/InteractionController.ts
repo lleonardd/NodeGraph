@@ -126,7 +126,6 @@ export class InteractionController extends LinkGraphData {
 
         this.isDragging = false
         this.linked.draggedNode = null
-        this.lastCanvasMousePosition = null
         this.lastRawMousePosition = null
     }
 

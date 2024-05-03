@@ -5,6 +5,7 @@ import { PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { NodeProps, Node } from "./Node"
 import { InteractionController } from "./InteractionController"
 import { AllPartial } from "./Types/utilTypes"
+import { HighlightController, HighlightedElementsList, HighlightTraverseType, suppressForHighlights } from "./HighlightFunctionality"
 
 type GraphManagerProps = {
     settings: AllPartial<Settings>
@@ -20,6 +21,7 @@ export type SharedGraphManagerData = {
     hoveredNodes: Node[]
     update: <K extends keyof SharedGraphManagerData>(key: K, value: SharedGraphManagerData[K]) => void
     updateCanvasSize: () => void
+    highlightedElements: HighlightedElementsList
 }
 
 export class GraphManager {
@@ -30,6 +32,7 @@ export class GraphManager {
     context: CanvasRenderingContext2D | null
     animationFrameId: number | null
     interactionController: InteractionController | null
+    highlightController: HighlightController | null
 
     constructor({ settings, canvas }: GraphManagerProps) {
         this.canvas = canvas
@@ -44,15 +47,17 @@ export class GraphManager {
             canvasSize: { x: canvas.width, y: canvas.height },
             draggedNode: null,
             hoveredNodes: [] as Node[],
+            highlightedElements: [] as HighlightedElementsList,
             update: this.updateSharedValue.bind(this),
             updateCanvasSize: this.updateCanvasSize.bind(this),
-        }
+        } as SharedGraphManagerData
         this.updateSettings(settings)
         this.animationFrameId = null
         this.interactionController = new InteractionController({
             graphManager: this,
             linked: this.shared,
         })
+        this.highlightController = new HighlightController({ linked: this.shared })
     }
 
     updateCanvasSize() {
@@ -89,6 +94,7 @@ export class GraphManager {
         this.context!.save()
         this.context!.translate(this.shared.positionOffset.x, this.shared.positionOffset.y)
         this.context!.scale(this.shared.zoom, this.shared.zoom)
+        suppressForHighlights({ context: this.context!, suppress: this.shared.highlightedElements.length > 0 })
         this.nodes.forEach((node) => node.draw({ context: this.context! }))
         this.links.forEach((link) => link.draw({ context: this.context! }))
         this.context!.restore()
@@ -99,14 +105,19 @@ export class GraphManager {
             x: (this.canvas.width + this.shared.positionOffset.x) * (0.5 - Math.random()),
             y: (this.canvas.height + this.shared.positionOffset.y) * (0.5 - Math.random()),
         }
+        if (props?.id && this.nodes.findIndex((node) => node.id === props?.id) !== -1) return null
         const newNode = new Node({ ...props, position, linked: this.shared })
         this.nodes.push(newNode)
         return newNode
     }
 
-    addLink(props: Partial<LinkProps> & { startNode: Node; endNode: Node }) {
-        if (props.startNode === props.endNode) return null
-        const newLink = new Link({ ...props, linked: this.shared })
+    addLink(props: Partial<LinkProps> & { startNodeOrId: LinkProps["startNode"]; endNodeOrId: LinkProps["endNode"] }) {
+        const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.find((node) => node.id === props.startNodeOrId)
+        const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
+        if (!startNode || !endNode || startNode === endNode) return null
+        const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
+        if (this.links.findIndex((link) => link.id === futureLinkId) !== -1) return null
+        const newLink = new Link({ ...props, startNode, endNode, linked: this.shared })
         const existsAtIndex = this.links.findIndex((link) => link.id === newLink.id)
         if (existsAtIndex === -1) {
             this.links.push(newLink)
@@ -149,6 +160,18 @@ export class GraphManager {
         if (linkIndex !== -1) {
             this.links.splice(linkIndex, 1)
         }
+    }
+
+    setHighlightedElements({ NodeLinkOrId, traverse = HighlightTraverseType.SHOW_NEIGHBORS }: { NodeLinkOrId: Link | Node | string; traverse: HighlightTraverseType }) {
+        const linkOrNodeId = getSaveLinkOrNodeId(NodeLinkOrId)
+        const element = this.nodes.find((n) => n.id === linkOrNodeId) ?? this.links.find((l) => l.id === linkOrNodeId)
+        if (element) {
+            this.highlightController?.highlightElements({ element, traverse })
+        }
+    }
+
+    resetHighlightLinks() {
+        this.highlightController?.resetHighlightElements()
     }
 
     updateSharedValue<K extends keyof SharedGraphManagerData>(key: K, value: SharedGraphManagerData[K]): void {

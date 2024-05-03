@@ -1,3 +1,4 @@
+import { resetHighlight, setHighlight } from "./HighlightFunctionality"
 import { LinkGraphData } from "./LinkGraphData"
 import { Node } from "./Node"
 import { Coordinate } from "./Types/Coordinate"
@@ -7,8 +8,8 @@ import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
 const arrowTipLengthMultiplier = 5
 
 export type LinkProps = {
-    startNode: Node
-    endNode: Node
+    startNode: Node | string
+    endNode: Node | string
     color: string
     title: string
     bidirectional: boolean
@@ -17,6 +18,7 @@ export type LinkProps = {
 export enum LinkActionState {
     HOVERED = "hovered",
     CLICKED = "clicked",
+    HIGHLIGHTED = "highlighted",
 }
 
 type LinkActionStatus = {
@@ -28,6 +30,7 @@ const genEmptyLinkActionStatus = () =>
     ({
         hovered: false,
         clicked: false,
+        highlighted: false,
     } as LinkActionStatus)
 
 export class Link extends LinkGraphData {
@@ -49,10 +52,10 @@ export class Link extends LinkGraphData {
         this.color = color ?? this.linked.settings.displayOptions.defaultLinkColor
         this.title = title
         this.bidirectional = bidirectional
-        this.id = this.buildLinkId(startNode.id, endNode.id)
+        this.id = Link.buildLinkId(startNode.id, endNode.id)
     }
 
-    buildLinkId(startNodeId: string, endNodeId: string) {
+    static buildLinkId(startNodeId: string, endNodeId: string) {
         return [startNodeId, endNodeId].sort().join("")
     }
 
@@ -65,6 +68,7 @@ export class Link extends LinkGraphData {
     }
 
     draw({ context }: { context: CanvasRenderingContext2D }) {
+        setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
         const { startPos, endPos } = this.calculateModifiedPointsByNodeSize(this.startNode, this.endNode)
 
         context.beginPath()
@@ -73,7 +77,12 @@ export class Link extends LinkGraphData {
         this.applyStyle(context)
         context.stroke()
 
-        if (this.title) {
+        if (
+            this.title &&
+            ((this.actionStatus.hovered && this.linked.settings.displayOptions.showLinkTextOnHover) ||
+                !this.linked.settings.displayOptions.showLinkTextOnHover ||
+                (this.actionStatus.highlighted && this.linked.settings.displayOptions.showLinkTextOnHighlight))
+        ) {
             drawTextOnCanvasContextWithSettings({
                 context,
                 settings: this.linked.settings,
@@ -89,6 +98,7 @@ export class Link extends LinkGraphData {
         } else if (this.linked.settings.displayOptions.showArrows) {
             this.drawArrowTip(context, startPos, endPos, this.linked.settings)
         }
+        resetHighlight({ context, highlightStatus: this.actionStatus.highlighted })
     }
 
     drawArrowTip(context: CanvasRenderingContext2D, fromPos: Coordinate, toPos: Coordinate, settings: Settings) {

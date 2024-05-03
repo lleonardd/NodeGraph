@@ -39,6 +39,8 @@ type DisplayOptions = {
     defaultLinkHighlightColor: string
     defaultNodeSize: number
     defaultLinkThickness: number
+    showLinkTextOnHover: boolean
+    showLinkTextOnHighlight: boolean
     textVisibilityZoomThreshold: number
 }
 
@@ -50,6 +52,8 @@ export const defaultDisplayOptions: DisplayOptions = {
     defaultLinkHighlightColor: "#EA4335",
     defaultNodeSize: 15,
     defaultLinkThickness: 2,
+    showLinkTextOnHover: true,
+    showLinkTextOnHighlight: true,
     textVisibilityZoomThreshold: 0.7,
 }
 

@@ -4,6 +4,7 @@ import { LinkGraphData } from "./LinkGraphData"
 import { PhysicalMovingObject, PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { Coordinate } from "./Types/Coordinate"
 import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
+import { resetHighlight, setHighlight } from "./HighlightFunctionality"
 
 export type NodeProps = {
     id: string
@@ -16,6 +17,7 @@ export enum NodeActionState {
     HOVERED = "hovered",
     CLICKED = "clicked",
     DRAGGED = "dragged",
+    HIGHLIGHTED = "highlighted",
 }
 
 type NodeActionStatus = {
@@ -53,6 +55,7 @@ export class Node extends PhysicalMovingObject {
     }
 
     draw({ context }: { context: CanvasRenderingContext2D }) {
+        setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
         context.beginPath()
         context.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI)
         context.fillStyle = this.actionStatus.hovered ? this.linked.settings.displayOptions.defaultNodeHighlightColor : this.color
@@ -67,6 +70,7 @@ export class Node extends PhysicalMovingObject {
                 zoom: this.linked.zoom,
             })
         }
+        resetHighlight({ context, highlightStatus: this.actionStatus.highlighted })
     }
 
     move(nodes: PhysicalMovingObject[]): void {

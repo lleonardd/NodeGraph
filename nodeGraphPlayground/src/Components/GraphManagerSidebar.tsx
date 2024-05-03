@@ -17,8 +17,8 @@ export function GraphManagerSidebar({ settings, handleChange }: { settings: Sett
 
     const addRandomLinks = (nr: number) => updateStatsAfter(() => {
         [...Array(nr)].forEach(() => graphManager?.addLink({
-            startNode: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
-            endNode: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
+            startNodeOrId: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
+            endNodeOrId: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
             title: "Test link " + graphManager?.links.length
         }))
     })
@@ -35,8 +35,8 @@ export function GraphManagerSidebar({ settings, handleChange }: { settings: Sett
         const randomExistingLink = graphManager?.links[Math.floor(Math.random() * graphManager?.links.length)]
         if (!randomExistingLink) return
         graphManager?.addLink({
-            startNode: randomExistingLink.endNode,
-            endNode: randomExistingLink.startNode,
+            startNodeOrId: randomExistingLink.endNode,
+            endNodeOrId: randomExistingLink.startNode,
             title: "Test link " + graphManager?.links.length
         })
     })

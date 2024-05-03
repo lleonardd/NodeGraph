@@ -1,0 +1,143 @@
+<mxfile host="app.diagrams.net" modified="2024-02-29T08:15:28.322Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="b99vnaa0ik1q59Ri6eXP" version="23.1.7" type="device">
+  <diagram name="Seite-1" id="YRc429tp72zdrkK6Dvp5">
+    <mxGraphModel dx="1405" dy="1025" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;" parent="1" source="W6voe40jEO86q52nm73l-1" target="W6voe40jEO86q52nm73l-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="612" y="382" />
+              <mxPoint x="706" y="114" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-1" value="SharedGraphManagerData" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="567" width="607" height="186" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-2" value="+ settings: Settings &lt;br&gt;+ zoom: number &lt;br&gt;+ positionOffset: Coordinate &lt;br&gt;+ canvasSize: Coordinate &lt;br&gt;+ draggedNode: Node | null &lt;br&gt;+ hoveredNodes: Node[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="W6voe40jEO86q52nm73l-1" vertex="1">
+          <mxGeometry y="26" width="607" height="106" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="W6voe40jEO86q52nm73l-1" vertex="1">
+          <mxGeometry y="132" width="607" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-4" value="+ update: `&amp;lt;K extends keyof SharedGraphManagerData&amp;gt;(key: K, value: SharedGraphManagerData[K]) =&amp;gt; void` &lt;br&gt;+ updateCanvasSize: `() =&amp;gt; void`" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="W6voe40jEO86q52nm73l-1" vertex="1">
+          <mxGeometry y="140" width="607" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-5" value="GraphManager" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="10" width="509" height="417" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-6" value="- nodes: Node[] &lt;br&gt;- links: Link[] &lt;br&gt;+ shared: SharedGraphManagerData &lt;br&gt;- canvas: HTMLCanvasElement &lt;br&gt;- context: CanvasRenderingContext2D | null &lt;br&gt;- animationFrameId: number | null &lt;br&gt;- interactionController: InteractionController | null" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="W6voe40jEO86q52nm73l-5" vertex="1">
+          <mxGeometry y="26" width="509" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="W6voe40jEO86q52nm73l-5" vertex="1">
+          <mxGeometry y="138" width="509" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="W6voe40jEO86q52nm73l-8" value="+ constructor: `({ settings, canvas }: GraphManagerProps) =&amp;gt; void` &lt;br&gt;- updateCanvasSize: `() =&amp;gt; void` &lt;br&gt;+ startAnimation: `() =&amp;gt; void` &lt;br&gt;+ stopAnimation: `() =&amp;gt; void` &lt;br&gt;- update: `() =&amp;gt; void` &lt;br&gt;- draw: `() =&amp;gt; void` &lt;br&gt;+ addNode: `(props: Partial&amp;lt;NodeProps &amp;amp; PhysicalMovingObjectProps&amp;gt;) =&amp;gt; Node` &lt;br&gt;+ addLink: `(props: Partial&amp;lt;LinkProps&amp;gt; &amp;amp; { startNode: Node; endNode: Node }) =&amp;gt; Link | null` &lt;br&gt;+ updateNode: `(nodeOrNodeId: Node | string, props: Partial&amp;lt;NodeProps &amp;amp; PhysicalMovingObjectProps&amp;gt;) =&amp;gt; Node | null` &lt;br&gt;+ updateLink: `(linkOrLinkId: Link | string, props: Partial&amp;lt;LinkProps&amp;gt;) =&amp;gt; Link | null` &lt;br&gt;+ removeNode: `(nodeOrNodeId: Node | string) =&amp;gt; void` &lt;br&gt;+ removeLink: `(linkOrLinkId: Link | string) =&amp;gt; void` &lt;br&gt;- updateSharedValue: `&amp;lt;K extends keyof SharedGraphManagerData&amp;gt;(key: K, value: SharedGraphManagerData[K]) =&amp;gt; void` &lt;br&gt;- addToPositionOffset: `(amountToAdd: Coordinate) =&amp;gt; void` &lt;br&gt;- setZoom: `(val: number) =&amp;gt; void` &lt;br&gt;- updateSettings: `(updatedSettings: AllPartial&amp;lt;Settings&amp;gt;) =&amp;gt; Settings`" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="W6voe40jEO86q52nm73l-5" vertex="1">
+          <mxGeometry y="146" width="509" height="271" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-15" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=28;endSize=20;endArrow=block;endFill=0;strokeColor=default;startArrow=none;startFill=0;" parent="1" source="cSRerU5N3Fw0Da54ZUop-1" target="cSRerU5N3Fw0Da54ZUop-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-1" value="InteractionController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="1002" width="500" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-2" value="-&lt;span style=&quot;&quot;&gt; graphManager: GraphManager&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; canvas: HTMLCanvasElement&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; isDragging: boolean&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; lastCanvasMousePosition: Coordinate | null&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; lastRawMousePosition: Coordinate | null&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; startDragPosition: Coordinate | null &lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; lastClickTime: number | null&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;-&lt;/span&gt;&lt;span style=&quot;&quot;&gt; hoveredLink: Link | null&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-1" vertex="1">
+          <mxGeometry y="26" width="500" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cSRerU5N3Fw0Da54ZUop-1" vertex="1">
+          <mxGeometry y="156" width="500" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-4" value="+ constructor(props: LinkGraphData &amp;amp; { graphManager: GraphManager }) &lt;br&gt;- initializeEventListeners(): void &lt;br&gt;- handleMouseMove(event: MouseEvent): void &lt;br&gt;- handleHover(canvasMousePos?: Coordinate): void &lt;br&gt;- dragOrPan(canvasMousePos: Coordinate, rawMousePos: Coordinate): void &lt;br&gt;- debugDisplay(context: CanvasRenderingContext2D): void &lt;br&gt;- handleZoom(event: WheelEvent): void &lt;br&gt;- startDrag(event: MouseEvent): void &lt;br&gt;- endDrag(event: MouseEvent): void &lt;br&gt;- handleClick(startDragPosition: Coordinate, endDragPosition: Coordinate): void &lt;br&gt;- getCanvasMousePosition(event: MouseEvent): Coordinate &lt;br&gt;- findNodesAtPosition(pos: Coordinate): Node[] &lt;br&gt;- findNodeAtPosition(pos: Coordinate): Node | null &lt;br&gt;- findLinkAtPosition(pos: Coordinate): Link | null" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-1" vertex="1">
+          <mxGeometry y="164" width="500" height="216" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-5" value="LinkGraphData" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="372" y="805" width="337" height="86" as="geometry">
+            <mxRectangle x="503" y="886" width="121" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-6" value="- linked: SharedGraphManagerData" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-5" vertex="1">
+          <mxGeometry y="26" width="337" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cSRerU5N3Fw0Da54ZUop-5" vertex="1">
+          <mxGeometry y="52" width="337" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-8" value="- constructor({ linked }: { linked: SharedGraphManagerData })" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-5" vertex="1">
+          <mxGeometry y="60" width="337" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-19" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;" parent="1" source="cSRerU5N3Fw0Da54ZUop-6" target="W6voe40jEO86q52nm73l-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="812" y="787" />
+              <mxPoint x="712" y="633" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=20;entryX=0.25;entryY=1;entryDx=0;entryDy=0;endArrow=block;endFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="cSRerU5N3Fw0Da54ZUop-21" target="cSRerU5N3Fw0Da54ZUop-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="437" y="962" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="276" y="1440" />
+              <mxPoint x="385" y="1436" />
+              <mxPoint x="560" y="1447" />
+              <mxPoint x="554" y="1279" />
+              <mxPoint x="560" y="973" />
+              <mxPoint x="457" y="987" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-21" value="PhysicalMovingObject" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="1487" width="540" height="146" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-22" value="- position: Coordinate" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-21" vertex="1">
+          <mxGeometry y="26" width="540" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-23" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cSRerU5N3Fw0Da54ZUop-21" vertex="1">
+          <mxGeometry y="52" width="540" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-24" value="+ constructor(props: Partial&amp;lt;PhysicalMovingObjectProps&amp;gt; &amp;amp; LinkGraphData) &lt;br&gt;+ move(allPhysicalObjects: PhysicalMovingObject[], links: Link[], repelAttractSwitchDistance: number) &lt;br&gt;- calculateExactDistance(otherPosition: Coordinate): number &lt;br&gt;- approximateDistance(otherPosition: Coordinate): number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-21" vertex="1">
+          <mxGeometry y="60" width="540" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-26" value="Node" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="1671" width="539" height="293" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-27" value="- id: string &lt;br&gt;- title: string &lt;br&gt;- size: number &lt;br&gt;- color: string &lt;br&gt;- parents: Node[] &lt;br&gt;- children: Node[] &lt;br&gt;- links: Set&amp;lt;Link&amp;gt; &lt;br&gt;- actionStatus: NodeActionStatus" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-26" vertex="1">
+          <mxGeometry y="26" width="539" height="129" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cSRerU5N3Fw0Da54ZUop-26" vertex="1">
+          <mxGeometry y="155" width="539" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-29" value="+ constructor(props: Partial&amp;lt;NodeProps&amp;gt; &amp;amp; LinkGraphData) &lt;br&gt;+ draw({ context }: { context: CanvasRenderingContext2D }) &lt;br&gt;+ move(nodes: PhysicalMovingObject[]): void &lt;br&gt;+ update(props: Partial&amp;lt;NodeProps&amp;gt;) &lt;br&gt;+ addLink(link: Link) &lt;br&gt;+ isPointInside({ x, y }: Coordinate): boolean &lt;br&gt;+ startAction(state: NodeActionState) &lt;br&gt;+ stopAction(state: NodeActionState)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-26" vertex="1">
+          <mxGeometry y="163" width="539" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-30" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.498;entryY=1.023;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=20;endArrow=block;endFill=0;" parent="1" source="cSRerU5N3Fw0Da54ZUop-26" target="cSRerU5N3Fw0Da54ZUop-24" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-35" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=20;endArrow=block;endFill=0;" parent="1" target="cSRerU5N3Fw0Da54ZUop-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="396" y="2032" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="396" y="1976" />
+              <mxPoint x="612" y="2012" />
+              <mxPoint x="592" y="1607" />
+              <mxPoint x="605" y="1312" />
+              <mxPoint x="605" y="1079" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-31" value="Link" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="11" y="2008" width="782" height="326" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-32" value="- startNode: Node &lt;br&gt;- endNode: Node &lt;br&gt;- id: string &lt;br&gt;- color: string &lt;br&gt;- title?: string &lt;br&gt;- bidirectional: boolean &lt;br&gt;- actionStatus: LinkActionStatus" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-31" vertex="1">
+          <mxGeometry y="26" width="782" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-33" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cSRerU5N3Fw0Da54ZUop-31" vertex="1">
+          <mxGeometry y="140" width="782" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cSRerU5N3Fw0Da54ZUop-34" value="+ constructor(props: Partial&amp;lt;LinkProps&amp;gt; &amp;amp; { startNode: Node; endNode: Node } &amp;amp; LinkGraphData) &lt;br&gt;- buildLinkId(startNodeId: string, endNodeId: string): string &lt;br&gt;+ update(props: Partial&amp;lt;LinkProps&amp;gt;): void &lt;br&gt;+ draw({ context }: { context: CanvasRenderingContext2D }): void &lt;br&gt;- drawArrowTip(context: CanvasRenderingContext2D, fromPos: Coordinate, toPos: Coordinate, settings: Settings): void &lt;br&gt;- applyStyle(context: CanvasRenderingContext2D): void &lt;br&gt;- calculateModifiedPointsByNodeSize(startNode: Node, endNode: Node, lineEndPadding?: number): { startPos: Coordinate; endPos: Coordinate } &lt;br&gt;+ startAction(state: LinkActionState): void &lt;br&gt;+ stopAction(state: LinkActionState): void &lt;br&gt;- isPointInside(pos: Coordinate): boolean &lt;br&gt;- pointNodeLineDistance(pointToCheck: Coordinate, startNode: Node, endNode: Node): number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cSRerU5N3Fw0Da54ZUop-31" vertex="1">
+          <mxGeometry y="148" width="782" height="178" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
