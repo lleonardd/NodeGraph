@@ -1,4 +1,4 @@
-import { resetHighlight, setHighlight } from "./HighlightFunctionality"
+import { resetHighlight, setHighlight } from "./HighlightController"
 import { LinkGraphData } from "./LinkGraphData"
 import { Node } from "./Node"
 import { Coordinate } from "./Types/Coordinate"

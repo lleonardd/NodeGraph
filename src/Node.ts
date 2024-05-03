@@ -4,7 +4,7 @@ import { LinkGraphData } from "./LinkGraphData"
 import { PhysicalMovingObject, PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { Coordinate } from "./Types/Coordinate"
 import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
-import { resetHighlight, setHighlight } from "./HighlightFunctionality"
+import { resetHighlight, setHighlight } from "./HighlightController"
 
 export type NodeProps = {
     id: string

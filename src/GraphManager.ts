@@ -5,7 +5,7 @@ import { PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { NodeProps, Node } from "./Node"
 import { InteractionController } from "./InteractionController"
 import { AllPartial } from "./Types/utilTypes"
-import { HighlightController, HighlightedElementsList, HighlightTraverseType, suppressForHighlights } from "./HighlightFunctionality"
+import { HighlightController, HighlightedElementsList, HighlightTraverseType, suppressForHighlights } from "./HighlightController"
 
 type GraphManagerProps = {
     settings: AllPartial<Settings>
@@ -33,6 +33,7 @@ export class GraphManager {
     animationFrameId: number | null
     interactionController: InteractionController | null
     highlightController: HighlightController | null
+    isMovementPaused: boolean
 
     constructor({ settings, canvas }: GraphManagerProps) {
         this.canvas = canvas
@@ -58,6 +59,7 @@ export class GraphManager {
             linked: this.shared,
         })
         this.highlightController = new HighlightController({ linked: this.shared })
+        this.isMovementPaused = false
     }
 
     updateCanvasSize() {
@@ -84,8 +86,16 @@ export class GraphManager {
         }
     }
 
+    pauseMovement() {
+        this.isMovementPaused = true
+    }
+
+    resumeMovement() {
+        this.isMovementPaused = false
+    }
+
     update() {
-        this.nodes.forEach((node) => node.move(this.nodes))
+        if (!this.isMovementPaused) this.nodes.forEach((node) => node.move(this.nodes))
         this.interactionController?.handleHover()
     }
 
