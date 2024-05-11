@@ -101,6 +101,13 @@ export class Node extends PhysicalMovingObject {
         return distance <= this.size
     }
 
+    getBrowserPosition(): Coordinate {
+        return {
+            x: this.position.x * this.linked.zoom + this.linked.positionOffset.x,
+            y: this.position.y * this.linked.zoom + this.linked.positionOffset.y,
+        }
+    }
+
     startAction(state: NodeActionState) {
         this.actionStatus[state] = true
     }
