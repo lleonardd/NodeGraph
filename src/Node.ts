@@ -37,8 +37,6 @@ export class Node extends PhysicalMovingObject {
     title: string
     size: number
     color: string
-    parents: Node[]
-    children: Node[]
     links: Set<Link>
     actionStatus: NodeActionStatus = genEmptyNodeActionStatus()
 
@@ -49,8 +47,6 @@ export class Node extends PhysicalMovingObject {
         this.title = title ?? ""
         this.size = props.size ?? this.linked.settings.displayOptions.defaultNodeSize
         this.color = props.color ?? this.linked.settings.displayOptions.defaultNodeColor
-        this.parents = []
-        this.children = []
         this.links = new Set<Link>()
     }
 
@@ -86,12 +82,11 @@ export class Node extends PhysicalMovingObject {
     }
 
     addLink(link: Link) {
-        if (link.startNode === this) {
-            this.parents.push(link.endNode)
-        } else {
-            this.children.push(link.startNode)
-        }
         this.links.add(link)
+    }
+
+    removeLink(link: Link) {
+        this.links.delete(link)
     }
 
     isPointInside({ x, y }: Coordinate): boolean {

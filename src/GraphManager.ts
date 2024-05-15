@@ -105,8 +105,8 @@ export class GraphManager {
         this.context!.translate(this.shared.positionOffset.x, this.shared.positionOffset.y)
         this.context!.scale(this.shared.zoom, this.shared.zoom)
         suppressForHighlights({ context: this.context!, suppress: this.shared.highlightedElements.length > 0 })
-        this.nodes.forEach((node) => node.draw({ context: this.context! }))
         this.links.forEach((link) => link.draw({ context: this.context! }))
+        this.nodes.forEach((node) => node.draw({ context: this.context! }))
         this.context!.restore()
     }
 
@@ -155,22 +155,21 @@ export class GraphManager {
     }
 
     removeNode(nodeOrNodeId: Node | string): void {
-        const nodeId = getSaveLinkOrNodeId(nodeOrNodeId)
-        const associatedLinks = this.links.filter((link) => link.startNode.id === nodeId || link.endNode.id === nodeId)
-        associatedLinks.forEach((link) => this.removeLink(link.id))
-        const nodeIndex = this.nodes.findIndex((node) => node.id === nodeId)
+        const node = typeof nodeOrNodeId === "object" ? nodeOrNodeId : this.nodes.find((node) => node.id === nodeOrNodeId)
+        if (!node) return
+        node.links.forEach((link) => this.removeLink(link))
+        const nodeIndex = this.nodes.findIndex((n) => n === node)
         if (nodeIndex !== -1) {
             this.nodes.splice(nodeIndex, 1)
         }
     }
 
     removeLink(linkOrLinkId: Link | string): void {
-        const linkId = getSaveLinkOrNodeId(linkOrLinkId)
-        const linkIndex = this.links.findIndex((link) => link.id === linkId)
+        const link = typeof linkOrLinkId === "object" ? linkOrLinkId : this.links.find((link) => link.id === linkOrLinkId)
+        if (!link) return
+        link?.remove()
+        const linkIndex = this.links.findIndex((l) => l === link)
         if (linkIndex !== -1) {
-            const link = this.links[linkIndex]
-            link.startNode.children = link.startNode.children.filter((node) => node.id !== link.endNode.id)
-            link.endNode.parents = link.endNode.parents.filter((node) => node.id !== link.startNode.id)
             this.links.splice(linkIndex, 1)
         }
     }

@@ -67,6 +67,11 @@ export class Link extends LinkGraphData {
         })
     }
 
+    remove() {
+        this.startNode.removeLink(this)
+        this.endNode.removeLink(this)
+    }
+
     draw({ context }: { context: CanvasRenderingContext2D }) {
         setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
         const { startPos, endPos } = this.calculateModifiedPointsByNodeSize(this.startNode, this.endNode)
