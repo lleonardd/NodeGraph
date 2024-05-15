@@ -17,7 +17,11 @@ const defaultSettingsWithDemoActions = {
             else nodes.forEach(node => graphManager?.setHighlightedElements({ NodeLinkOrId: node, traverse: HighlightTraverseType.FOLLOW_LINKS }))
             console.log('Nodes hovered: ', nodes.map(node => node.id).join(", "))
         },
-        nodeClicked: (node: Node) => { console.log('Node clicked: ', node.id) },
+        nodeClicked: (node: Node) => {
+            graphManager?.removeNode(node)
+            console.log('Node clicked: ', node.id)
+            console.log(graphManager?.nodes, graphManager?.links)
+        },
         nodeDoubleClicked: (node: Node) => { console.log('Node double clicked: ', node.id) },
         nodeDroppedOnNodes: (node: Node, nodes: Node[]) => {
             console.log('Node: ', node.id, ' dropped on Nodes: ', nodes.map(node => node.id).join(", "))

@@ -37,7 +37,7 @@ export class HighlightController extends LinkGraphData {
                 })
             }
             if (element instanceof Link) {
-                this.highlightElement(element.startNode)
+                // this.highlightElement(element.startNode)
                 this.highlightElements({ element: element.endNode, traverse })
                 if (element.bidirectional) this.highlightElements({ element: element.startNode, traverse })
             }

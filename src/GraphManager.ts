@@ -168,6 +168,9 @@ export class GraphManager {
         const linkId = getSaveLinkOrNodeId(linkOrLinkId)
         const linkIndex = this.links.findIndex((link) => link.id === linkId)
         if (linkIndex !== -1) {
+            const link = this.links[linkIndex]
+            link.startNode.children = link.startNode.children.filter((node) => node.id !== link.endNode.id)
+            link.endNode.parents = link.endNode.parents.filter((node) => node.id !== link.startNode.id)
             this.links.splice(linkIndex, 1)
         }
     }
