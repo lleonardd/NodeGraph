@@ -126,7 +126,7 @@ export class GraphManager {
         const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
 
         if (!startNode || !endNode || startNode === endNode) return null
-        const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
+        const futureLinkId = props.id ?? Link.buildLinkId(startNode.id, endNode.id)
         const existsAtIndex = this.links.findIndex((link) => link.id === futureLinkId)
         if (existsAtIndex !== -1) {
             this.updateLink(this.links[existsAtIndex], props)
