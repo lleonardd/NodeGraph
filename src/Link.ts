@@ -13,6 +13,7 @@ export type LinkProps = {
     color: string
     title: string
     bidirectional: boolean
+    id: string
 } & LinkGraphData
 
 export enum LinkActionState {
@@ -44,7 +45,7 @@ export class Link extends LinkGraphData {
 
     constructor(props: Partial<LinkProps> & { startNode: Node; endNode: Node } & LinkGraphData) {
         super(props)
-        const { startNode, endNode, title, bidirectional = false, color } = props
+        const { startNode, endNode, title, bidirectional = false, color, id } = props
         this.startNode = startNode
         this.endNode = endNode
         startNode.addLink(this)
@@ -52,7 +53,7 @@ export class Link extends LinkGraphData {
         this.color = color ?? this.linked.settings.displayOptions.defaultLinkColor
         this.title = title
         this.bidirectional = bidirectional
-        this.id = Link.buildLinkId(startNode.id, endNode.id)
+        this.id = id ?? Link.buildLinkId(startNode.id, endNode.id)
     }
 
     static buildLinkId(startNodeId: string, endNodeId: string) {

@@ -129,7 +129,7 @@ export class GraphManager {
         const futureLinkId = Link.buildLinkId(startNode.id, endNode.id)
         const existsAtIndex = this.links.findIndex((link) => link.id === futureLinkId)
         if (existsAtIndex !== -1) {
-            this.links[existsAtIndex].bidirectional = props?.bidirectional ?? true
+            this.updateLink(this.links[existsAtIndex], props)
             return null
         }
 
