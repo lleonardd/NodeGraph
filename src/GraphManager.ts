@@ -43,6 +43,7 @@ export class GraphManager {
         this.context = canvas.getContext("2d")
         this.nodes = new Map()
         this.links = new Map()
+        this.updateCanvasSize(false)
         this.shared = {
             settings: defaultSettings,
             zoom: 1,
@@ -54,7 +55,6 @@ export class GraphManager {
             update: this.updateSharedValue.bind(this),
             updateCanvasSize: this.updateCanvasSize.bind(this),
         } as SharedGraphManagerData
-        this.updateCanvasSize()
         this.updateSettings(settings)
         this.animationFrameId = null
         this.interactionController = new InteractionController({
@@ -63,14 +63,15 @@ export class GraphManager {
         })
         this.highlightController = new HighlightController({ linked: this.shared })
         this.isMovementPaused = false
+        this.updateVisibleCanvasArea()
     }
 
-    updateCanvasSize() {
+    updateCanvasSize(updateVisibleCanvasArea = true) {
         const rect = this.canvas.getBoundingClientRect()
         this.canvas.width = rect.width
         this.canvas.height = rect.height
         if (this.shared?.canvasSize) this.shared.canvasSize = { x: rect.width, y: rect.height }
-        this.updateVisibleCanvasArea()
+        if (updateVisibleCanvasArea) this.updateVisibleCanvasArea()
     }
 
     startAnimation() {
