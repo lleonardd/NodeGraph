@@ -88,7 +88,7 @@ export class InteractionController extends LinkGraphData {
 
     handleZoom(event: WheelEvent) {
         event.preventDefault()
-        const zoomIntensity = 0.02
+        const zoomIntensity = this.linked.settings.displayOptions.defaultScrollZoomSpeed
         const scaleFactor = event.deltaY > 0 ? 1 - zoomIntensity : 1 + zoomIntensity
         this.linked.update("zoom", Math.min(Math.max(0.05, this.linked.zoom * scaleFactor), 20))
 

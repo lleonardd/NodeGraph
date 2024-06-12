@@ -183,6 +183,14 @@ export function GraphManagerSidebar({ settings, handleChange }: { settings: Sett
                     step="0.1"
                     value={settings.displayOptions?.textVisibilityZoomThreshold || ''}
                     onChange={val => handleChange('displayOptions', 'textVisibilityZoomThreshold', val)} />
+
+                <InputRange
+                    settingName='Zoom Speed'
+                    min="0.1"
+                    max="0.5"
+                    step="0.05"
+                    value={settings.displayOptions?.defaultScrollZoomSpeed || ''}
+                    onChange={val => handleChange('displayOptions', 'defaultScrollZoomSpeed', val)} />
             </fieldset>
         </div>
     )
