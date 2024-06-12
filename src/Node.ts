@@ -69,7 +69,7 @@ export class Node extends PhysicalMovingObject {
         resetHighlight({ context, highlightStatus: this.actionStatus.highlighted })
     }
 
-    move(nodes: PhysicalMovingObject[]): void {
+    move(nodes: Map<string, PhysicalMovingObject>): void {
         super.move(nodes, Array.from(this.links), this.size * 3)
     }
 

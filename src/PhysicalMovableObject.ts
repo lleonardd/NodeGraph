@@ -14,13 +14,13 @@ export class PhysicalMovingObject extends LinkGraphData {
 		this.position = { x: 0, y: 0, ...props.position }
 	}
 
-	move(allPhysicalObjects: PhysicalMovingObject[], links: Link[], repelAttractSwitchDistance: number) {
+	move(allPhysicalObjects: Map<string, PhysicalMovingObject>, links: Link[], repelAttractSwitchDistance: number) {
 		if (this === (this.linked.draggedNode as PhysicalMovingObject)) return
 		const forces = this.linked.settings.forceParameters
 		let dx = 0 - this.position.x * forces.centerForce
 		let dy = 0 - this.position.y * forces.centerForce
 
-		const scaledRepelForce = parseFloat((forces.repelForce / Math.sqrt(allPhysicalObjects.length + 1)).toFixed(2))
+		const scaledRepelForce = parseFloat((forces.repelForce / Math.sqrt(allPhysicalObjects.size + 1)).toFixed(2))
 
 		// Repel
 		allPhysicalObjects.forEach((otherPhysicalObject) => {

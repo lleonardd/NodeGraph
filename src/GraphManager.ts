@@ -25,8 +25,8 @@ export type SharedGraphManagerData = {
 }
 
 export class GraphManager {
-    nodes: Node[]
-    links: Link[]
+    nodes: Map<string, Node>
+    links: Map<string, Link>
     shared: SharedGraphManagerData
     canvas: HTMLCanvasElement
     context: CanvasRenderingContext2D | null
@@ -39,8 +39,8 @@ export class GraphManager {
         this.canvas = canvas
         this.context = canvas.getContext("2d")
         this.updateCanvasSize()
-        this.nodes = []
-        this.links = []
+        this.nodes = new Map()
+        this.links = new Map()
         this.shared = {
             settings: defaultSettings,
             zoom: 1,
@@ -115,68 +115,54 @@ export class GraphManager {
             x: (this.canvas.width + this.shared.positionOffset.x) * (0.5 - Math.random()),
             y: (this.canvas.height + this.shared.positionOffset.y) * (0.5 - Math.random()),
         }
-        if (props?.id && this.nodes.findIndex((node) => node.id === props?.id) !== -1) return null
+        if (props?.id && !this.nodes.has(props?.id)) return null
         const newNode = new Node({ ...props, position, linked: this.shared })
-        this.nodes.push(newNode)
+        this.nodes.set(newNode.id, newNode)
         return newNode
     }
 
     addLink(props: Partial<LinkProps> & { startNodeOrId: LinkProps["startNode"]; endNodeOrId: LinkProps["endNode"] }) {
-        const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.find((node) => node.id === props.startNodeOrId)
-        const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.find((node) => node.id === props.endNodeOrId)
-
+        const startNode = typeof props.startNodeOrId === "object" ? props.startNodeOrId : this.nodes.get(props.startNodeOrId)
+        const endNode = typeof props.endNodeOrId === "object" ? props.endNodeOrId : this.nodes.get(props.endNodeOrId)
         if (!startNode || !endNode || startNode === endNode) return null
+
         const futureLinkId = props.id ?? Link.buildLinkId(startNode.id, endNode.id)
-        const existsAtIndex = this.links.findIndex((link) => link.id === futureLinkId)
-        if (existsAtIndex !== -1) {
-            this.updateLink(this.links[existsAtIndex], props)
-            return null
-        }
+        if (this.links.has(futureLinkId)) this.updateLink(futureLinkId, props)
 
         const newLink = new Link({ ...props, startNode, endNode, linked: this.shared, bidirectional: props?.bidirectional })
-        this.links.push(newLink)
+        this.links.set(newLink.id, newLink)
         return newLink
     }
 
     updateNode(nodeOrNodeId: Node | string, props: Partial<NodeProps & PhysicalMovingObjectProps>) {
-        const nodeId = getSaveLinkOrNodeId(nodeOrNodeId)
-        const nodeIndex = this.nodes.findIndex((node) => node.id === nodeId)
-        if (nodeIndex === -1) return null
-        this.nodes[nodeIndex].update(props)
-        return this.nodes[nodeIndex]
+        const node = this.nodes.get(getSaveLinkOrNodeId(nodeOrNodeId))
+        node?.update(props)
+        return node
     }
 
     updateLink(linkOrLinkId: Link | string, props: Partial<LinkProps>) {
-        const linkId = getSaveLinkOrNodeId(linkOrLinkId)
-        const linkIndex = this.links.findIndex((link) => link.id === linkId)
-        if (linkIndex === -1) return null
-        this.links[linkIndex].update(props)
-        return this.links[linkIndex]
+        const link = this.links.get(getSaveLinkOrNodeId(linkOrLinkId))
+        link?.update(props)
+        return link
     }
 
     removeNode(nodeOrNodeId: Node | string): void {
-        const node = typeof nodeOrNodeId === "object" ? nodeOrNodeId : this.nodes.find((node) => node.id === nodeOrNodeId)
+        const node = this.nodes.get(getSaveLinkOrNodeId(nodeOrNodeId))
         if (!node) return
         node.links.forEach((link) => this.removeLink(link))
-        const nodeIndex = this.nodes.findIndex((n) => n === node)
-        if (nodeIndex !== -1) {
-            this.nodes.splice(nodeIndex, 1)
-        }
+        this.nodes.delete(node.id)
     }
 
     removeLink(linkOrLinkId: Link | string): void {
-        const link = typeof linkOrLinkId === "object" ? linkOrLinkId : this.links.find((link) => link.id === linkOrLinkId)
+        const link = this.links.get(getSaveLinkOrNodeId(linkOrLinkId))
         if (!link) return
         link?.remove()
-        const linkIndex = this.links.findIndex((l) => l === link)
-        if (linkIndex !== -1) {
-            this.links.splice(linkIndex, 1)
-        }
+        this.links.delete(link.id)
     }
 
     setHighlightedElements({ NodeLinkOrId, traverse = HighlightTraverseType.SHOW_NEIGHBORS }: { NodeLinkOrId: Link | Node | string; traverse: HighlightTraverseType }) {
         const linkOrNodeId = getSaveLinkOrNodeId(NodeLinkOrId)
-        const element = this.nodes.find((n) => n.id === linkOrNodeId) ?? this.links.find((l) => l.id === linkOrNodeId)
+        const element = this.nodes.get(linkOrNodeId) ?? this.links.get(linkOrNodeId)
         if (element) {
             this.highlightController?.highlightElements({ element, traverse })
         }
