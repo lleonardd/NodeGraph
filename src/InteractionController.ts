@@ -169,14 +169,22 @@ export class InteractionController extends LinkGraphData {
     }
 
     findNodesAtPosition(pos: Coordinate): Node[] {
-        return this.graphManager.nodes.filter((node) => node.isPointInside(pos))
+        const result: Node[] = []
+        this.graphManager.nodes.forEach((node) => node.isPointInside(pos) && result.push(node))
+        return result
     }
 
     findNodeAtPosition(pos: Coordinate): Node | null {
-        return this.graphManager.nodes.find((node) => node.isPointInside(pos)) ?? null
+        for (const node of this.graphManager.nodes.values()) {
+            if (node.isPointInside(pos)) return node
+        }
+        return null
     }
 
     findLinkAtPosition(pos: Coordinate): Link | null {
-        return this.graphManager.links.find((link) => link.isPointInside(pos)) ?? null
+        for (const link of this.graphManager.links.values()) {
+            if (link.isPointInside(pos)) return link
+        }
+        return null
     }
 }

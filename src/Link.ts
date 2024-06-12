@@ -4,6 +4,7 @@ import { Node } from "./Node"
 import { Coordinate } from "./Types/Coordinate"
 import { Settings } from "./Types/SettingsTypes"
 import { drawTextOnCanvasContextWithSettings } from "./externalRenderingMethods"
+import { getBoundingBoxForLine, isElementVisible } from "./util"
 
 const arrowTipLengthMultiplier = 5
 
@@ -74,8 +75,10 @@ export class Link extends LinkGraphData {
     }
 
     draw({ context }: { context: CanvasRenderingContext2D }) {
-        setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
         const { startPos, endPos } = this.calculateModifiedPointsByNodeSize(this.startNode, this.endNode)
+        const boundingBox = getBoundingBoxForLine(startPos, endPos)
+        if (!isElementVisible({ boundingBox, visibleCanvasArea: this.linked.visibleCanvasArea })) return
+        setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
 
         context.beginPath()
         context.moveTo(startPos.x, startPos.y)

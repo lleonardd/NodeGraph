@@ -1,5 +1,5 @@
 import { Link } from "./Link"
-import { genId } from "./util"
+import { genId, getBoundingBoxForCircle, isElementVisible } from "./util"
 import { LinkGraphData } from "./LinkGraphData"
 import { PhysicalMovingObject, PhysicalMovingObjectProps } from "./PhysicalMovableObject"
 import { Coordinate } from "./Types/Coordinate"
@@ -51,6 +51,9 @@ export class Node extends PhysicalMovingObject {
     }
 
     draw({ context }: { context: CanvasRenderingContext2D }) {
+        const boundingBox = getBoundingBoxForCircle(this.position, this.size)
+        if (!isElementVisible({ boundingBox, visibleCanvasArea: this.linked.visibleCanvasArea })) return
+
         setHighlight({ context, highlightStatus: this.actionStatus.highlighted })
         context.beginPath()
         context.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI)

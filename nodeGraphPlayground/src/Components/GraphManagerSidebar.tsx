@@ -8,38 +8,50 @@ export function GraphManagerSidebar({ settings, handleChange }: { settings: Sett
 
     const updateStatsAfter = (fn: (props?: any) => void, props?: any) => {
         fn(props)
-        setGraphStats(prev => ({ ...prev, links: graphManager?.links.length ?? 0, nodes: graphManager?.nodes.length ?? 0 }))
+        setGraphStats(prev => ({ ...prev, links: graphManager?.links.size ?? 0, nodes: graphManager?.nodes.size ?? 0 }))
     }
 
     const addNodes = (nr: number) => updateStatsAfter(() => {
-        [...Array(nr)].forEach(() => graphManager?.addNode({ title: "Test node " + graphManager?.nodes.length }))
+        [...Array(nr)].forEach(() => graphManager?.addNode({ title: "Test node " + graphManager?.nodes.size }))
     })
 
+    const getRandomMapValue = <T extends any>(map: Map<any, T>): T => {
+        const keys = Array.from(map.keys())
+        const randomKey = keys[Math.floor(Math.random() * keys.length)]
+        return map.get(randomKey)!
+    }
+
     const addRandomLinks = (nr: number) => updateStatsAfter(() => {
-        [...Array(nr)].forEach(() => graphManager?.addLink({
-            startNodeOrId: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
-            endNodeOrId: graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)],
-            title: "Test link " + graphManager?.links.length
+        Array.from({ length: nr }).forEach(() => graphManager?.addLink({
+            startNodeOrId: getRandomMapValue(graphManager?.nodes),
+            endNodeOrId: getRandomMapValue(graphManager?.nodes),
+            title: "Test link " + graphManager?.links.size
         }))
     })
 
     const removeRandomNode = () => updateStatsAfter(() => {
-        graphManager?.removeNode(graphManager?.nodes[Math.floor(Math.random() * graphManager?.nodes.length)])
+        if (!graphManager?.nodes) return
+        const randomNode = getRandomMapValue(graphManager?.nodes)
+        graphManager?.removeNode(randomNode.id)
     })
 
     const removeRandomLink = () => updateStatsAfter(() => {
-        graphManager?.removeLink(graphManager?.links[Math.floor(Math.random() * graphManager?.links.length)])
+        if (!graphManager?.links) return
+        const randomLink = getRandomMapValue(graphManager?.links)
+        graphManager?.removeLink(randomLink.id)
     })
 
     const makeRandomLinkBidirectional = () => updateStatsAfter(() => {
-        const randomExistingLink = graphManager?.links[Math.floor(Math.random() * graphManager?.links.length)]
+        if (!graphManager?.links) return
+        const randomExistingLink = getRandomMapValue(graphManager?.links)
         if (!randomExistingLink) return
         graphManager?.addLink({
             startNodeOrId: randomExistingLink.endNode,
             endNodeOrId: randomExistingLink.startNode,
-            title: "Test link " + graphManager?.links.length
+            title: "Test link " + graphManager?.links.size
         })
     })
+
 
     return (
         <div className='[&>fieldset>label]:block [&>fieldset]:border-black [&>fieldset]:border [&>fieldset]:p-2 [&>fieldset]:mt-4 [&>fieldset]:ml-4 [&>fieldset]:mb-6 max-w-md h-full overflow-scroll'>

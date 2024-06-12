@@ -12,6 +12,8 @@ type GraphManagerProps = {
     canvas: HTMLCanvasElement
 }
 
+export type VisibleCanvasArea = { minX: number; maxX: number; minY: number; maxY: number }
+
 export type SharedGraphManagerData = {
     settings: Settings
     zoom: number
@@ -22,6 +24,7 @@ export type SharedGraphManagerData = {
     update: <K extends keyof SharedGraphManagerData>(key: K, value: SharedGraphManagerData[K]) => void
     updateCanvasSize: () => void
     highlightedElements: HighlightedElementsList
+    visibleCanvasArea: VisibleCanvasArea
 }
 
 export class GraphManager {
@@ -38,7 +41,6 @@ export class GraphManager {
     constructor({ settings, canvas }: GraphManagerProps) {
         this.canvas = canvas
         this.context = canvas.getContext("2d")
-        this.updateCanvasSize()
         this.nodes = new Map()
         this.links = new Map()
         this.shared = {
@@ -52,6 +54,7 @@ export class GraphManager {
             update: this.updateSharedValue.bind(this),
             updateCanvasSize: this.updateCanvasSize.bind(this),
         } as SharedGraphManagerData
+        this.updateCanvasSize()
         this.updateSettings(settings)
         this.animationFrameId = null
         this.interactionController = new InteractionController({
@@ -67,6 +70,7 @@ export class GraphManager {
         this.canvas.width = rect.width
         this.canvas.height = rect.height
         if (this.shared?.canvasSize) this.shared.canvasSize = { x: rect.width, y: rect.height }
+        this.updateVisibleCanvasArea()
     }
 
     startAnimation() {
@@ -174,15 +178,21 @@ export class GraphManager {
 
     updateSharedValue<K extends keyof SharedGraphManagerData>(key: K, value: SharedGraphManagerData[K]): void {
         this.shared[key] = value
+        if (key === "positionOffset" || key === "zoom") this.updateVisibleCanvasArea()
     }
 
-    addToPositionOffset(amountToAdd: Coordinate) {
-        this.shared.positionOffset.x = amountToAdd.x
-        this.shared.positionOffset.y = amountToAdd.y
-    }
+    updateVisibleCanvasArea() {
+        const zoom = this.shared.zoom
+        const positionOffset = this.shared.positionOffset
+        const canvasSize = this.shared.canvasSize
+        const linkDistance = (this.shared.settings.forceParameters.linkDistance || 0) * 1.3
 
-    setZoom(val: number) {
-        this.shared.zoom = val
+        const minX = -positionOffset.x / zoom - linkDistance
+        const maxX = (canvasSize.x - positionOffset.x) / zoom + linkDistance
+        const minY = -positionOffset.y / zoom - linkDistance
+        const maxY = (canvasSize.y - positionOffset.y) / zoom + linkDistance
+
+        this.shared.visibleCanvasArea = { minX, maxX, minY, maxY }
     }
 
     updateSettings(updatedSettings: AllPartial<Settings>) {
